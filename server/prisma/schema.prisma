@@ -7,28 +7,31 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Customer {
-  id        String     @id @default(uuid())
-  email     String     @unique
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
   name      String?
+  products  Product[]
   licenses  License[]
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Product {
-  id          String     @id @default(uuid())
+  id          String    @id @default(uuid())
   name        String
   description String?
+  ownerId     String
+  owner       User      @relation(fields: [ownerId], references: [id])
   licenses    License[]
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 model License {
-  id              String       @id @default(uuid())
-  key             String       @unique
-  customerId      String
+  id              String        @id @default(uuid())
+  key             String        @unique
+  userId          String
   productId       String
   status          LicenseStatus @default(ACTIVE)
   activationLimit Int?
@@ -37,18 +40,16 @@ model License {
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 
-  customer Customer @relation(fields: [customerId], references: [id])
-  product  Product  @relation(fields: [productId], references: [id])
+  user            User         @relation(fields: [userId], references: [id])
+  product         Product      @relation(fields: [productId], references: [id])
   activationsList Activation[]
-
-  @@index([key])
 }
 
 model Activation {
-  id            String   @id @default(uuid())
-  licenseId     String
+  id                String   @id @default(uuid())
+  licenseId         String
   deviceFingerprint String?
-  activatedAt   DateTime @default(now())
+  activatedAt       DateTime @default(now())
 
   license License @relation(fields: [licenseId], references: [id])
 }

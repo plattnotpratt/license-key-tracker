@@ -2,7 +2,7 @@ const { PrismaClient, ClergyType } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 async function clearTable(){
-    await prisma.staff.deleteMany({});
+    await prisma.product.deleteMany({});
     await prisma.clergy.deleteMany({});
     await prisma.ministry.deleteMany({});
     await prisma.mass.deleteMany({});
@@ -21,9 +21,9 @@ async function addUser(){
     data:{
       id: 1,
       photo:'https://lh3.googleusercontent.com/a/ACg8ocJS9axdX9EDDarvsrxaKwTnwsB0_n5E_LYMI8KAwtVVYj8EkWg=s96-c',
-      fname: 'Christopher',
-      lname: 'Platt',
-      email: 'plattnotpratt@gmail.com',
+      fname: 'John',
+      lname: 'Doe',
+      email: 'test@google.com',
       provider: 'google',
       providerId: '114646459561880335694'
     }
