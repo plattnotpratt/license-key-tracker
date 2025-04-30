@@ -1,0 +1,60 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Customer {
+  id        String     @id @default(uuid())
+  email     String     @unique
+  name      String?
+  licenses  License[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Product {
+  id          String     @id @default(uuid())
+  name        String
+  description String?
+  licenses    License[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model License {
+  id              String       @id @default(uuid())
+  key             String       @unique
+  customerId      String
+  productId       String
+  status          LicenseStatus @default(ACTIVE)
+  activationLimit Int?
+  activations     Int           @default(0)
+  expiresAt       DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  customer Customer @relation(fields: [customerId], references: [id])
+  product  Product  @relation(fields: [productId], references: [id])
+  activationsList Activation[]
+
+  @@index([key])
+}
+
+model Activation {
+  id            String   @id @default(uuid())
+  licenseId     String
+  deviceFingerprint String?
+  activatedAt   DateTime @default(now())
+
+  license License @relation(fields: [licenseId], references: [id])
+}
+
+enum LicenseStatus {
+  ACTIVE
+  REVOKED
+  EXPIRED
+}

@@ -1,0 +1,11 @@
+DB_HOST=127.0.0.1
+DB_USER=root
+DB_PASSWORD=supersecretpassword
+DB_NAME=license-key-tracker
+DB_PORT=3306
+API_PORT=5001
+TOKEN_SECRET=supersecretstringthatislongerthan20charachters
+DATABASE_URL=mysql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?connect_timeout=300
+GOOGLE_CLIENT_ID=client-id-from-dashboard
+GOOGLE_CLIENT_SECRET=secret-key-from-dashboard
+GOOGLE_CALLBACK_URL=http://localhost:5001/auth/google/callback
